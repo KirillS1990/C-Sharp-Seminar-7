@@ -67,33 +67,52 @@
 // 8 4 2 4
 // Среднее арифметическое каждого столбца: 4,6; 5,6; 3,6; 3.
 
-// Console.Clear();
-// System.Console.WriteLine("Введите количество строк: ");
-// int m = Convert.ToInt32(Console.ReadLine());
-// System.Console.WriteLine("Введите количество столбцов: ");
-// int n = Convert.ToInt32(Console.ReadLine());
-// int[,] massiv = new int[m, n];
-// Random sluchay = new Random();
-// double numLine = 0;
-// for (int i = 0; i < massiv.GetLength(0); i++)
-// {
-//     for (int j = 0; j < massiv.GetLength(1); j++)
-//     {
-//         massiv[i, j] = sluchay.Next(1, 15);
-//         Console.Write($"{massiv[i, j]}\t");
-//     }
-//     Console.WriteLine();
-//     numLine++;
-// }
-// Console.Write("Среднее арифметическое каждого столбца: ");
-// int sum = 0;
-// for (int j = 0; j < massiv.GetLength(1); j++)
-// {
-//     for (int i = 0; i < massiv.GetLength(0); i++)
-//     {
-//         sum = sum + massiv[i, j];
-//     }
-//     Console.Write("{0,6:F1}", sum / numLine);
-//     sum = 0;
-// }
+Console.Clear();
+int Prompt(string message)
+{
+    System.Console.Write(message);                          // Вывести сообщение
+    int result = Convert.ToInt32(Console.ReadLine()); // Считывает значение
+    return result;                                                            // Возвращает результат
+}
+int[,] FillArray(int numLine, int numColumns, int maxRand = 20, int minRand = 0 )         
+{
+    int[,] matrix = new int[numLine, numColumns];
+    for (int i = 0; i < matrix.GetLength(0); i++)   // Строка
+    {
+        for (int j = 0; j < matrix.GetLength(1); j++)     // Столбец
+        {
+            matrix[i, j] = new Random().Next(minRand, maxRand);      // [0; 20) по умолчанию 
+        }
+    }
+    return matrix;
+}
 
+void PrintArray(int[,] matrix)             
+{
+    for (int i = 0; i < matrix.GetLength(0); i++)   // Строка
+    {
+        for (int j = 0; j < matrix.GetLength(1); j++)   // Столбец
+        {
+            Console.Write($"{matrix[i, j]}\t");
+        }
+        Console.WriteLine();
+    }
+}
+
+int numLine = Prompt("Введите число строк: ");
+int numColumns = Prompt("Введите число стобцов: ");
+int maxRand = Prompt("Введите верхний диапазон: ");
+int minRand = Prompt("Введите нижний диапазон: ");
+int[,] matrix = FillArray(numLine, numColumns, maxRand, minRand); 
+PrintArray(matrix);
+double sum = 0;
+for (int j = 0; j < matrix.GetLength(1); j++)
+{
+    for (int i = 0; i < matrix.GetLength(0); i++)
+    {
+        sum = sum + matrix[i, j];
+    }
+    Console.Write("|{0,6:F1}| ", sum / numLine);
+    Console.WriteLine($" - cреднее арифметическое {j + 1} столбца.");
+    sum = 0;
+}
